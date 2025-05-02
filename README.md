@@ -1,4 +1,4 @@
-﻿# ParlamataUI - Advanced Player UI for SCP:Secret Laboratory
+﻿# ParlamataUI - Advanced Player UI for SCP\:Secret Laboratory
 
 ParlamataUI is a modular and dynamic UI plugin built for SCP: Secret Laboratory servers using **Exiled 9.6.0-beta7** and **HintServiceMeow (HSM) V5.4.0 Beta 1**.
 
@@ -8,34 +8,36 @@ It provides a fully customizable on-screen player interface that includes real-t
 
 ## Features
 
-- ✅ Dynamic player hint panel (lower-left)
-  - Nickname and real name
-  - Role name
-  - Spectator count (for live players)
-  - Kill count (for live players)
-  - Round timer (formatted as MM:SS)
+* ✅ Dynamic player hint panel (lower-left)
 
-- ✅ Persistent server name display (bottom-center)
+  * Nickname and real name
+  * Role name
+  * Spectator count (for live players)
+  * Kill count (for live players)
+  * Round timer (formatted as MM\:SS)
 
-- ✅ Active effects HUD (left side)
-  - Automatically displays effects affecting the player
-  - Includes remaining duration (e.g. "RainbowTaste [6s]")
-  - Completely disappears when no effects are active
+* ✅ Persistent server name display (bottom-center)
 
-- ✅ Adaptive positioning based on resolution & aspect ratio
+* ✅ Active effects HUD (left side, above the player hint UI)
 
-- ✅ Uses [HintServiceMeow](https://github.com/MeowServer/HintServiceMeow) for stable and performant hints
+  * Automatically displays effects affecting the player
+  * Includes remaining duration (e.g. "RainbowTaste \[6s]")
+  * Completely disappears when no effects are active
 
-- ✅ Configuration-driven control over enabled modules and emoji-style icons
+* ✅ Adaptive positioning based on resolution & aspect ratio
 
-- ✅ Debug logging support
+* ✅ Uses [HintServiceMeow](https://github.com/MeowServer/HintServiceMeow) for stable and performant hints
+
+* ✅ Configuration-driven control over enabled modules and emoji-style icons
+
+* ✅ Debug logging support
 
 ---
 
 ## Dependencies
 
-- Exiled 9.6.0-beta7
-- HintServiceMeow-Exiled.dll (V5.4.0 Beta 1)
+* Exiled 9.6.0-beta7
+* HintServiceMeow-Exiled.dll (V5.4.0 Beta 1)
 
 ---
 
@@ -68,3 +70,31 @@ emoji_icons:
   spectators: 👥
   kills: ✈
   timer: ⏱
+```
+
+---
+
+## Developer Notes
+
+* Positioning of hints is resolution-independent, calculated with a custom formula:
+
+```cs
+float GetLeftXPosition(float aspect) =>
+  622.27444f * Pow(aspect, 3f) - 2869.08991f * Pow(aspect, 2f) +
+  3827.03102f * aspect - 1580.21554f;
+```
+
+* Server name hint is created once per player and stays persistent.
+* Active effect hints are dynamically created/removed based on effect presence.
+* All hint rendering is handled through `HintServiceMeow.Core.Models.Hints.Hint`.
+
+---
+
+## License
+
+This plugin is developed for and used by the SCP Bulgaria community. You are free to use, fork, and adapt it under the MIT License.
+
+---
+
+**Created by:** LaFesta1749
+**Server:** SCP Bulgaria ПАРЛАМАТА
