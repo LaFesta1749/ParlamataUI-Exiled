@@ -16,6 +16,7 @@ namespace ParlamataUI
 
         private static readonly Dictionary<string, HSMHint> ActiveHints = new();
         private static readonly Dictionary<string, HSMHint> ServerNameHints = new();
+        private static readonly Dictionary<string, HSMHint> EffectHints = new();
 
         public static void RenderUI(Player player)
         {
@@ -84,6 +85,56 @@ namespace ParlamataUI
 
                 if (Config.Debug)
                     Log.Debug($"[ParlamataUI] Added ServerName hint for {player.Nickname}.");
+            }
+
+            // === Ефекти върху играча (горе-дясно) ===
+            var effectsList = new StringBuilder();
+
+            foreach (var effect in player.ActiveEffects)
+            {
+                if (effect.IsEnabled)
+                {
+                    int remaining = Mathf.CeilToInt(effect.TimeLeft);
+                    string effectName = effect.GetType().Name;
+                    effectsList.AppendLine($"<color=#ff6a00>{effectName}</color> <size=20>[{remaining}s]</size>");
+                }
+            }
+
+            string effectUserId = player.UserId;
+
+            if (effectsList.Length == 0)
+            {
+                // Няма ефекти — махни Hint-а, ако съществува
+                if (EffectHints.TryGetValue(effectUserId, out var activeHint))
+                {
+                    PlayerDisplay.Get(player).RemoveHint(activeHint);
+                    EffectHints.Remove(effectUserId);
+
+                    if (Config.Debug)
+                        Log.Debug($"[ParlamataUI] Removed Effect hint for {player.Nickname}.");
+                }
+            }
+            else
+            {
+                // Има ефекти — създай/ъпдейтни Hint-а
+                if (!EffectHints.TryGetValue(effectUserId, out var effectHint))
+                {
+                    effectHint = new HSMHint
+                    {
+                        FontSize = 20,
+                        YCoordinate = 720,
+                        XCoordinate = GetLeftXPosition(aspect),
+                        Alignment = HintAlignment.Left
+                    };
+
+                    PlayerDisplay.Get(player).AddHint(effectHint);
+                    EffectHints[effectUserId] = effectHint;
+
+                    if (Config.Debug)
+                        Log.Debug($"[ParlamataUI] Added Effect hint for {player.Nickname}.");
+                }
+
+                effectHint.Text = effectsList.ToString();
             }
         }
 
