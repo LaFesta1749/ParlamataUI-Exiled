@@ -28,6 +28,10 @@ namespace ParlamataUI
 
             _renderCoroutine = Timing.RunCoroutine(RenderLoop());
 
+            Exiled.Events.Handlers.Server.RoundEnded += RoundResetHandler.OnRoundEnded;
+
+            Exiled.Events.Handlers.Player.Destroying += PlayerCleanupHandler.OnPlayerDestroying;
+
             base.OnEnabled();
         }
 
@@ -42,6 +46,10 @@ namespace ParlamataUI
                 Log.Info("ParlamataUI: Plugin disabled.");
 
             Instance = null!;
+
+            Exiled.Events.Handlers.Server.RoundEnded -= RoundResetHandler.OnRoundEnded;
+
+            Exiled.Events.Handlers.Player.Destroying -= PlayerCleanupHandler.OnPlayerDestroying;
 
             base.OnDisabled();
         }

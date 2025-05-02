@@ -164,5 +164,25 @@ namespace ParlamataUI
 
             return null!;
         }
+
+        public static void ClearAllHints()
+        {
+            ActiveHints.Clear();
+            ServerNameHints.Clear();
+            EffectHints.Clear();
+
+            if (Plugin.Config.Debug)
+                Log.Debug("[ParlamataUI] Cleared hint caches on round end.");
+        }
+
+        public static void RemoveHintsFor(string userId)
+        {
+            ActiveHints.Remove(userId);
+            ServerNameHints.Remove(userId);
+            EffectHints.Remove(userId);
+
+            if (Plugin.Config.Debug)
+                Log.Debug($"[ParlamataUI] Removed cached hints for {userId} (player left/destroyed).");
+        }
     }
 }
