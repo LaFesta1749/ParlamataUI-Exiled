@@ -9,7 +9,7 @@ namespace ParlamataUI
     {
         public override string Author => "LaFesta1749";
         public override string Name => "ParlamataUI";
-        public override Version Version => new(1, 0, 2);
+        public override Version Version => new(1, 0, 3);
         public override Version RequiredExiledVersion => new(9, 6, 0);
 
         public static Plugin Instance { get; private set; } = null!;
@@ -33,6 +33,9 @@ namespace ParlamataUI
             Exiled.Events.Handlers.Player.Destroying += PlayerCleanupHandler.OnPlayerDestroying;
 
             base.OnEnabled();
+
+            XPSystem.XPDatabase.Initialize();
+            XPSystem.XPEvents.Register();
         }
 
         public override void OnDisabled()
@@ -50,6 +53,8 @@ namespace ParlamataUI
             Exiled.Events.Handlers.Server.RoundEnded -= RoundResetHandler.OnRoundEnded;
 
             Exiled.Events.Handlers.Player.Destroying -= PlayerCleanupHandler.OnPlayerDestroying;
+
+            XPSystem.XPEvents.Unregister();
 
             base.OnDisabled();
         }

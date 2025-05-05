@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using HSMHint = HintServiceMeow.Core.Models.Hints.Hint;
+using ParlamataUI.XPSystem;
+using MEC;
 
 namespace ParlamataUI
 {
@@ -17,6 +19,8 @@ namespace ParlamataUI
         private static readonly Dictionary<string, HSMHint> ActiveHints = new();
         private static readonly Dictionary<string, HSMHint> ServerNameHints = new();
         private static readonly Dictionary<string, HSMHint> EffectHints = new();
+        private static readonly Dictionary<string, HSMHint> XpHints = new();
+        private static readonly Dictionary<string, HSMHint> XpFeedbackHints = new();
 
         public static void RenderUI(Player player)
         {
@@ -29,6 +33,42 @@ namespace ParlamataUI
 
             string roleColor = target.Role.Color.ToHex();
             var sb = new StringBuilder();
+
+            // === XP/Level Hint (център-горе) ===
+            if (Config.ShowXP)
+            {
+                var xpData = XPManager.GetData(player);
+                float aspectRatio = player.ReferenceHub.aspectRatioSync.AspectRatio;
+                string xpUserId = player.UserId;
+
+                int currentLevel = xpData.Level;
+                int currentXP = xpData.XP;
+                int neededXP = XPManager.GetXPRequired(currentLevel + 1);
+
+                string xpText = $"<b><color=#FFD700>⭐ Level {currentLevel}</color></b> <color=#AAAAAA>|</color> " +
+                                $"<color=#00C3FF>XP: {currentXP}</color> <color=#AAAAAA>/</color> <color=#00FFAA>{neededXP}</color>";
+
+                if (!XpHints.TryGetValue(xpUserId, out var xpHint))
+                {
+                    xpHint = new HSMHint
+                    {
+                        FontSize = 24,
+                        YCoordinate = 20,
+                        XCoordinate = GetCenterXPosition(aspectRatio),
+                        Alignment = HintAlignment.Center
+                    };
+
+                    PlayerDisplay.Get(player).AddHint(xpHint);
+                    XpHints[xpUserId] = xpHint;
+
+                    if (Config.Debug)
+                        Log.Debug($"[ParlamataUI] Added XP hint for {player.Nickname}.");
+                }
+
+                xpHint.Text = xpText;
+            }
+
+
 
             // === ЛЯВО-ДОЛУ - основен info хинт ===
             sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Name}</color> | {RealNameResolver.GetDisplayName(target, Config.ShowRealName)}");
@@ -170,6 +210,8 @@ namespace ParlamataUI
             ActiveHints.Clear();
             ServerNameHints.Clear();
             EffectHints.Clear();
+            XpHints.Clear();
+            XpFeedbackHints.Clear();
 
             if (Plugin.Config.Debug)
                 Log.Debug("[ParlamataUI] Cleared hint caches on round end.");
@@ -180,9 +222,60 @@ namespace ParlamataUI
             ActiveHints.Remove(userId);
             ServerNameHints.Remove(userId);
             EffectHints.Remove(userId);
+            XpHints.Remove(userId);
+            XpFeedbackHints.Remove(userId);
 
             if (Plugin.Config.Debug)
                 Log.Debug($"[ParlamataUI] Removed cached hints for {userId} (player left/destroyed).");
+        }
+
+        public static void ShowXPMessage(Player player, string message)
+        {
+            string userId = player.UserId;
+            float aspect = player.ReferenceHub.aspectRatioSync.AspectRatio;
+
+            if (!XpFeedbackHints.TryGetValue(userId, out var hint))
+            {
+                hint = new HSMHint
+                {
+                    FontSize = 18,
+                    YCoordinate = 50,
+                    XCoordinate = GetCenterXPosition(aspect),
+                    Alignment = HintAlignment.Center
+                };
+
+                PlayerDisplay.Get(player).AddHint(hint);
+                XpFeedbackHints[userId] = hint;
+
+                if (Plugin.Config.Debug)
+                    Log.Debug($"[ParlamataUI] Added XP Feedback hint for {player.Nickname}.");
+            }
+
+            hint.Text = $"<color=#7af57a>{message}</color>";
+
+            // → Скрий го след 3 секунди
+            DestroyHintIn(player, hint, 3f);
+        }
+
+        public static void DestroyHintIn(Player player, HSMHint hint, float delay)
+        {
+            string tag = $"xp_msg_{player.UserId}";
+            Timing.KillCoroutines(tag);
+            CoroutineHandle handle = Timing.RunCoroutine(DestroyHintCoroutine(player, hint, delay));
+            handle.Tag = tag;
+        }
+
+        private static IEnumerator<float> DestroyHintCoroutine(Player player, HSMHint hint, float delay)
+        {
+            yield return Timing.WaitForSeconds(delay);
+
+            PlayerDisplay.Get(player).RemoveHint(hint);
+
+            if (XpFeedbackHints.TryGetValue(player.UserId, out var stored) && stored == hint)
+                XpFeedbackHints.Remove(player.UserId);
+
+            if (Plugin.Config.Debug)
+                Log.Debug($"[ParlamataUI] XP feedback hint destroyed for {player.Nickname}.");
         }
     }
 }

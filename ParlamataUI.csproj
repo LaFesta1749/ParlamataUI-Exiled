@@ -21,8 +21,14 @@
     <Reference Include="HintServiceMeow">
       <HintPath>E:\Depedancies\HintServiceMeow-Exiled.dll</HintPath>
     </Reference>
+    <Reference Include="LiteDB">
+      <HintPath>..\..\..\OneDrive\Работен плот\Dev\helpsense\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Mirror">
       <HintPath>E:\Depedancies\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Pooling">
+      <HintPath>E:\Depedancies\Pooling.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>E:\Depedancies\UnityEngine.dll</HintPath>
@@ -30,6 +36,17 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>E:\Depedancies\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>E:\Depedancies\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="XPSystem">
+      <HintPath>E:\Depedancies\XPSystem-EXILED.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="XPSystem\Commands\" />
+    <Folder Include="XPSystem\Events\" />
   </ItemGroup>
 
 </Project>

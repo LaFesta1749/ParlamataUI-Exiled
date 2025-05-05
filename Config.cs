@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using ParlamataUI.XPSystem;
 
 namespace ParlamataUI
 {
@@ -11,6 +12,12 @@ namespace ParlamataUI
 
         [Description("Enable debug logs.")]
         public bool Debug { get; set; } = false;
+
+        [Description("Show XP and Level info at the top-center of the screen.")]
+        public bool ShowXP { get; set; } = true;
+
+        [Description("XP rewards for different events.")]
+        public XPRewardsConfig XPRewards { get; set; } = new();
 
         [Description("How often the UI should update (in seconds).")]
         public float UpdateInterval { get; set; } = 1f;
