@@ -9,7 +9,7 @@ namespace ParlamataUI
     {
         public override string Author => "LaFesta1749";
         public override string Name => "ParlamataUI";
-        public override Version Version => new(1, 0, 3);
+        public override Version Version => new(1, 0, 4);
         public override Version RequiredExiledVersion => new(9, 6, 0);
 
         public static Plugin Instance { get; private set; } = null!;
