@@ -61,6 +61,9 @@ namespace ParlamataUI
         [Description("Emoji for kill count.")]
         public string Kills { get; set; } = "🔪";
 
+        [Description("Emoji for SCP-106 traps (players sent to pocket dimension).")]
+        public string Traps { get; set; } = "🕳";
+
         [Description("Emoji for the round timer.")]
         public string Timer { get; set; } = "🕒";
     }

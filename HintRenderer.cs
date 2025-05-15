@@ -8,6 +8,7 @@ using UnityEngine;
 using HSMHint = HintServiceMeow.Core.Models.Hints.Hint;
 using ParlamataUI.XPSystem;
 using MEC;
+using PlayerRoles;
 
 namespace ParlamataUI
 {
@@ -80,7 +81,20 @@ namespace ParlamataUI
                 sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Spectators}</color> | {SpectatorTracker.GetSpectatorCount(target)}");
 
             if (Config.ShowKills && target.IsAlive)
-                sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Kills}</color> | {KillTracker.GetKills(target)}");
+            {
+                int kills = KillTracker.GetKills(target);
+                int traps = KillTracker.GetTrappedVictims(target);
+
+                if (target.Role.Type == RoleTypeId.Scp106)
+                {
+                    int total = kills + traps;
+                    sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Traps}</color> | {total}");
+                }
+                else
+                {
+                    sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Kills}</color> | {kills}");
+                }
+            }
 
             if (Config.ShowElapsedRoundTime)
                 sb.AppendLine($"<color={roleColor}>{Config.EmojiIcons.Timer}</color> | {RoundTimer.GetFormattedElapsedTime()}");
