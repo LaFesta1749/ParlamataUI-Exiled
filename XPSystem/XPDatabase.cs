@@ -3,6 +3,7 @@ using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using static InventorySystem.Items.Firearms.Modules.LinearAdsModule;
 
 namespace ParlamataUI.XPSystem
 {
@@ -13,6 +14,8 @@ namespace ParlamataUI.XPSystem
 
         private static LiteDatabase? _db;
         private static ILiteCollection<PlayerXP>? _collection;
+
+        public static Dictionary<string, PlayerXP> AllXP { get; private set; } = new();
 
         public static void Initialize()
         {

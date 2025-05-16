@@ -10,5 +10,9 @@ namespace ParlamataUI.XPSystem
         public int XP { get; set; } = 0;
 
         public int Level { get; set; } = 1;
+
+        public string LastKnownName { get; set; } = "";
+
+
     }
 }

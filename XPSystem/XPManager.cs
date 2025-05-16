@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.Events.Commands.Reload;
 
 namespace ParlamataUI.XPSystem
 {
@@ -22,6 +23,19 @@ namespace ParlamataUI.XPSystem
             XPDatabase.Save(data);
 
             HintRenderer.RenderUI(player);
+        }
+
+        public static Dictionary<string, PlayerXP> AllData { get; } = new();
+
+        public static void Save(string _, PlayerXP data)
+        {
+            XPDatabase.Save(data); // userId се съдържа вече вътре в `data.UserId`
+        }
+
+        public static void SaveAll()
+        {
+            foreach (var pair in AllData)
+                XPDatabase.Save(pair.Value);
         }
 
         public static int CalculateLevel(int totalXp)
