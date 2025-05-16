@@ -2,97 +2,94 @@
 
 ParlamataUI is a modular and dynamic UI plugin built for SCP: Secret Laboratory servers using **Exiled 9.6.0-beta7** and **HintServiceMeow (HSM) V5.4.0 Beta 1**.
 
-It provides a fully customizable on-screen player interface that includes real-time player information, adaptive scaling based on resolution, server branding, and now **live effect tracking** and **XP + Leveling System**.
-
----
+It provides a fully customizable on-screen player interface that includes:
+- real-time player information
+- adaptive scaling based on resolution
+- custom server branding
+- XP + Leveling System
+- status effect tracking
 
 ## Features
 
-* ✅ Dynamic player hint panel (lower-left)
+✅ **Dynamic player hint panel (lower-left)**  
+- Nickname and real name  
+- Role name  
+- Spectator count  
+- Kill count (for non-106)  
+- Kill count + pocket trap victims (for SCP-106)  
+- Round timer (formatted as MM:SS)
 
-  * Nickname and real name
-  * Role name
-  * Spectator count (for live players)
-  * Kill count (for live players)
-  * Round timer (formatted as MM\:SS)
+✅ **Persistent server name display (bottom-center)**  
+- Configurable static branding text
 
-* ✅ Persistent server name display (bottom-center)
+✅ **Status Effect HUD (upper-left)**  
+- Shows active effects and their remaining duration  
+- Only appears if effects are active  
+- Auto-hides when empty
 
-* ✅ Active effects HUD (left side, above the player hint UI)
+✅ **XP + Level UI (top-center)**  
+- Live XP bar and level info  
+- XP gained from events  
+- XP popup messages
 
-  * Automatically displays effects affecting the player
-  * Includes remaining duration (e.g. "RainbowTaste \[6s]")
-  * Completely disappears when no effects are active
+✅ **Supports spectators**  
+- Spectators see stats of the player they're watching  
+- UI adapts to role
 
-* ✅ XP & Level UI (top-center)
+✅ **Resolution-aware positioning**  
+- Hint placement recalculated dynamically with formula:
+```cs
+float GetLeftXPosition(float aspect) =>
+  622.27444f * Pow(aspect, 3f) - 2869.08991f * Pow(aspect, 2f) +
+  3827.03102f * aspect - 1580.21554f;
+```
 
-  * Displays current XP and Level
-  * Real-time updates on progress
-  * Includes XP gain notifications below level bar (auto-hide after 3s)
+✅ **Kill tracking + Pocket logic**  
+- Standard kills tracked  
+- SCP-106 gets additional victim tracking for pocket dimension  
+- Broadcast when someone escapes the pocket
 
-* ✅ XP System Events:
+✅ **Built-in XP/Level System**  
+- Level formula: Level XP requirement increases with each level  
+- Event-based XP rewards  
+- Data saved per UserID
 
-  * Kill — +5 XP
-  * Death — +2 XP
-  * Escape — +25 XP
-  * Win (alive) — +3 XP
-  * Open door — +1 XP
-  * Pickup item — +2 XP
-  * Drop item — +1 XP
-  * Use medkit — +2 XP
-  * Throw grenade — +1 XP
-  * Activate generator — +5 XP
-  * Use SCP-914 — +3 XP
-  * Spawn — +3 XP
-  * Resurrect (as SCP-049) — +2 XP
+✅ **XP Commands (.xplvl / .xpset / .xpadd / .xpr / .xpbackup etc)**  
+- Manage levels and XP from console or RA  
+- View top players with `.xpleaderboard`
 
-* ✅ Adaptive positioning based on resolution & aspect ratio
-
-* ✅ Uses [HintServiceMeow](https://github.com/MeowServer/HintServiceMeow) for stable and performant hints
-
-* ✅ Configuration-driven control over enabled modules, emoji-style icons, and XP reward values
-
-* ✅ Debug logging support
-
----
-
-## Dependencies
-
-* Exiled 9.6.0-beta7
-* HintServiceMeow-Exiled.dll (V5.4.0 Beta 1)
-
----
+✅ **Configurable Emojis and UI text**  
+✅ **Debug mode**
 
 ## Installation
 
-1. Download and install Exiled 9.6.0-beta7 on your server.
-2. Place `HintServiceMeow-Exiled.dll` in your `dependencies` folder.
-3. Place the compiled `ParlamataUI.dll` into your `plugins` folder.
-4. Make sure your `config.yml` for the plugin is set correctly (see below).
+1. Download and install **Exiled 9.6.0-beta7** on your server.
+2. Place `HintServiceMeow-Exiled.dll` into your `dependencies` folder.
+3. Place `ParlamataUI.dll` into your `plugins` folder.
+4. Start the server once to generate the default config.
+5. Edit the config (`ParlamataUI/config.yml`) to match your preferences.
 
----
-
-## Configuration
-
-```yaml
+## Configuration Example
 is_enabled: true
+debug: false
 update_interval: 1.0
+enable_for_spectators: true
 show_real_name: true
 show_role: true
 show_spectators: true
 show_kills: true
 show_elapsed_round_time: true
-debug: false
 show_xp: true
 
 server_name: "[BUL/ENG] BULGARIA - ПАРЛАМАТА"
 
 emoji_icons:
-  name: 🔍
-  role: 🤖
+  name: 👤
+  role: 🎭
   spectators: 👥
-  kills: ✈
+  kills: 🔪
   timer: ⏱
+  pocket: 🕳
 
 xp_rewards:
   on_kill: 5
@@ -108,32 +105,45 @@ xp_rewards:
   on_upgrade_item: 3
   on_spawn: 3
   on_resurrect: 2
-```
 
----
+## XP Console/RA Commands
+
+- `.xpleaderboard` / `.xpl`  
+  Show top 10 players and your own XP/level.
+
+- `.xplvl <UserID> <amount>`  
+  Add level(s) to a user.
+
+- `.xpset <UserID> <amount>`  
+  Set XP directly and recalculate level.
+
+- `.xpadd <UserID> <amount>`  
+  Add raw XP to user.
+
+- `.xpr <UserID>`  
+  Reset one user’s XP.
+
+- `.xpra`  
+  Reset ALL users' XP.
+
+- `.xpbackup` / `.xpb`  
+  Create a `.bak` backup of the XP database.
 
 ## Developer Notes
 
-* Positioning of hints is resolution-independent, calculated with a custom formula:
-
-```cs
-float GetLeftXPosition(float aspect) =>
-  622.27444f * Pow(aspect, 3f) - 2869.08991f * Pow(aspect, 2f) +
-  3827.03102f * aspect - 1580.21554f;
-```
-
-* Server name hint is created once per player and stays persistent.
-* Active effect hints are dynamically created/removed based on effect presence.
-* XP feedback hint uses timed removal via coroutine (disappears after 3s).
-* All hint rendering is handled through `HintServiceMeow.Core.Models.Hints.Hint`.
-
----
+- Hints are stored per player in dictionaries.
+- Effects are dynamically removed if empty.
+- Hint positions adapt to resolution using aspect ratio math.
+- XP data is stored using LiteDB in `XPSystem.db`.
+- XPManager handles all operations and formatting.
+- XPEventCache prevents farming the same event repeatedly in one round.
 
 ## License
 
-This plugin is developed for and used by the SCP Bulgaria community. You are free to use, fork, and adapt it under the MIT License.
+MIT License – Free to use, modify, and distribute.
 
 ---
 
-**Created by:** LaFesta1749
-**Server:** SCP Bulgaria ПАРЛАМАТА
+**Created by:** LaFesta1749  
+**Server:** SCP Bulgaria ПАРЛАМАТА  
+**Version:** 1.0.4  
