@@ -17,28 +17,28 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>E:\Depedancies\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="HintServiceMeow">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\HintServiceMeow-Exiled.dll</HintPath>
+      <HintPath>E:\Depedancies\HintServiceMeow.dll</HintPath>
     </Reference>
     <Reference Include="LiteDB">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\LiteDB.dll</HintPath>
+      <HintPath>E:\Depedancies\LiteDB.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\Mirror.dll</HintPath>
+      <HintPath>E:\Depedancies\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="Pooling">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\Pooling.dll</HintPath>
+      <HintPath>E:\Depedancies\Pooling.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\UnityEngine.dll</HintPath>
+      <HintPath>E:\Depedancies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>E:\Depedancies\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\Desktop\SCP Plugins\0-Depedancies\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>E:\Depedancies\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 
