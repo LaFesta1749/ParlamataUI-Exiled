@@ -200,7 +200,9 @@ namespace ParlamataUI
         }
 
         // === Центриране (може да е винаги 0, но запазваме за бъдеща логика) ===
+            #pragma warning disable IDE0060 // Remove unused parameter
         private static float GetCenterXPosition(float aspectRatio)
+            #pragma warning restore IDE0060 // Remove unused parameter
         {
             return 0f;
         }
