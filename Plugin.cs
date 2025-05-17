@@ -1,5 +1,7 @@
 ﻿using Exiled.API.Features;
 using MEC;
+using System;
+using System.Collections.Generic;
 
 namespace ParlamataUI
 {
@@ -27,13 +29,12 @@ namespace ParlamataUI
             _renderCoroutine = Timing.RunCoroutine(RenderLoop());
 
             Exiled.Events.Handlers.Server.RoundEnded += RoundResetHandler.OnRoundEnded;
-
             Exiled.Events.Handlers.Player.Destroying += PlayerCleanupHandler.OnPlayerDestroying;
-
-            base.OnEnabled();
 
             XPSystem.XPDatabase.Initialize();
             XPSystem.XPEvents.Register();
+
+            base.OnEnabled();
         }
 
         public override void OnDisabled()
