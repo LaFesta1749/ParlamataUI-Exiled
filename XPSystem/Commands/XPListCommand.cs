@@ -1,8 +1,4 @@
 ﻿using CommandSystem;
-using System;
-using System.Linq;
-using Exiled.API.Features;
-using ParlamataUI.XPSystem;
 
 namespace ParlamataUI.XPSystem.Commands
 {

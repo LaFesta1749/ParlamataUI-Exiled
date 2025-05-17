@@ -1,7 +1,5 @@
 ﻿using Exiled.API.Features;
 using MEC;
-using System;
-using System.Collections.Generic;
 
 namespace ParlamataUI
 {

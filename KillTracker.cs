@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
-using System.Linq;
+using MEC;
+using HintServiceMeow.Core.Enum;
+using HintServiceMeow.Core.Utilities;
+using HSMHint = HintServiceMeow.Core.Models.Hints.Hint;
 
 namespace ParlamataUI
 {
@@ -9,6 +11,8 @@ namespace ParlamataUI
     {
         private static readonly Dictionary<Player, int> _killCounts = new();
         private static readonly Dictionary<Player, int> _scp106Traps = new();
+        private static readonly Dictionary<string, HSMHint> PocketEscapeHints = new();
+        private static readonly Dictionary<string, CoroutineHandle> PocketHintCoroutines = new();
 
         public static void Enable()
         {
@@ -65,18 +69,55 @@ namespace ParlamataUI
             if (scp106 == null)
                 return;
 
+            string userId = scp106.UserId;
+            var display = PlayerDisplay.Get(scp106);
+
+            // Премахни стария Hint (ако съществува)
+            if (PocketEscapeHints.TryGetValue(userId, out var oldHint))
+            {
+                display.RemoveHint(oldHint);
+                PocketEscapeHints.Remove(userId);
+            }
+
+            // Спри старата coroutine (ако съществува)
+            if (PocketHintCoroutines.TryGetValue(userId, out var oldCoroutine))
+            {
+                Timing.KillCoroutines(oldCoroutine);
+                PocketHintCoroutines.Remove(userId);
+            }
+
+            // Създай нов Hint
             string message = $"<b><color=#ff4444>{ev.Player.Nickname}</color></b> escaped your pocket dimension!";
-            var hint = new HintServiceMeow.Core.Models.Hints.Hint
+            var newHint = new HSMHint
             {
                 FontSize = 24,
                 XCoordinate = 0,
                 YCoordinate = 900,
-                Alignment = HintServiceMeow.Core.Enum.HintAlignment.Center,
+                Alignment = HintAlignment.Center,
                 Text = message
             };
 
-            HintServiceMeow.Core.Utilities.PlayerDisplay.Get(scp106).AddHint(hint);
+            display.AddHint(newHint);
+            PocketEscapeHints[userId] = newHint;
+
+            // Започни coroutine за премахване след 3 сек
+            CoroutineHandle handle = Timing.RunCoroutine(RemovePocketHintAfterDelay(scp106, newHint, 3f));
+            PocketHintCoroutines[userId] = handle;
         }
+
+        private static IEnumerator<float> RemovePocketHintAfterDelay(Player scp106, HSMHint hint, float delay)
+        {
+            yield return Timing.WaitForSeconds(delay);
+
+            string userId = scp106.UserId;
+            if (PocketEscapeHints.TryGetValue(userId, out var current) && current == hint)
+            {
+                PlayerDisplay.Get(scp106).RemoveHint(hint);
+                PocketEscapeHints.Remove(userId);
+                PocketHintCoroutines.Remove(userId);
+            }
+        }
+
         private static void OnPlayerDied(DiedEventArgs ev)
         {
             if (ev.Attacker == null || ev.Attacker == ev.Player || !ev.Attacker.IsAlive)

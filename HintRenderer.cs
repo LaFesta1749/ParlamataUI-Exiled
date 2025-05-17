@@ -1,8 +1,6 @@
 ﻿using Exiled.API.Features;
-using HintServiceMeow.Core;
 using HintServiceMeow.Core.Enum;
 using HintServiceMeow.Core.Utilities;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using HSMHint = HintServiceMeow.Core.Models.Hints.Hint;
