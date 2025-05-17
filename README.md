@@ -32,6 +32,11 @@ It provides a fully customizable on-screen player interface that includes:
 - XP gained from events  
 - XP popup messages
 
+✅ SCP-106 Escape Hint (center screen)
+- Displays a message when a player escapes SCP-106's pocket dimension
+- Auto-removes after 3 seconds
+- Replaces previous message if multiple players escape
+
 ✅ **Supports spectators**  
 - Spectators see stats of the player they're watching  
 - UI adapts to role
