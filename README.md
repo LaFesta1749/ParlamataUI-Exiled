@@ -27,6 +27,11 @@ It provides a fully customizable on-screen player interface that includes:
 - Only appears if effects are active  
 - Auto-hides when empty
 
+✅ **Status Effect Intensity**
+- Active effects now also show their intensity level (if applicable)
+- Format: [Time Left, Lvl X]
+- Helps track effect strength (e.g. Bleeding Lvl 2)
+
 ✅ **XP + Level UI (top-center)**  
 - Live XP bar and level info  
 - XP gained from events  
