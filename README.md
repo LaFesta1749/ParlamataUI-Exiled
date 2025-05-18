@@ -36,6 +36,7 @@ It provides a fully customizable on-screen player interface that includes:
 - Live XP bar and level info  
 - XP gained from events  
 - XP popup messages
+- Door XP now only triggers when the door is being opened, not closed.
 
 ✅ SCP-106 Escape Hint (center screen)
 - Displays a message when a player escapes SCP-106's pocket dimension
@@ -71,6 +72,27 @@ float GetLeftXPosition(float aspect) =>
 ✅ **Configurable Emojis and UI text**  
 ✅ **Debug mode**
 
+## XP Event Rules
+
+Some events reward XP **multiple times per round**, while others only once.
+
+### 🔁 Repeatable Events:
+- kill
+- death
+- door
+- spawn
+- generator
+- upgrade
+- throw
+- resurrect
+
+### 🧷 One-time Events:
+- escape
+- win
+- pickup
+- drop
+- use (medkit)
+
 ## Installation
 
 1. Download and install **Exiled 9.6.0-beta7** on your server.
@@ -80,6 +102,7 @@ float GetLeftXPosition(float aspect) =>
 5. Edit the config (`ParlamataUI/config.yml`) to match your preferences.
 
 ## Configuration Example
+```yaml
 is_enabled: true
 debug: false
 update_interval: 1.0
@@ -115,6 +138,7 @@ xp_rewards:
   on_upgrade_item: 3
   on_spawn: 3
   on_resurrect: 2
+```
 
 ## XP Console/RA Commands
 
@@ -152,8 +176,12 @@ xp_rewards:
 
 MIT License – Free to use, modify, and distribute.
 
+## Support
+
+Need help or want to suggest a feature? Open an issue or contact me on Discord: `LaFesta1749`
+
 ---
 
 **Created by:** LaFesta1749  
 **Server:** SCP Bulgaria ПАРЛАМАТА  
-**Version:** 1.0.4  
+**Version:** 1.0.7
