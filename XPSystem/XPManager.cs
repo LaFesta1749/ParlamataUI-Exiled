@@ -59,7 +59,10 @@ namespace ParlamataUI.XPSystem
             if (!Plugin.Instance.Config.IsEnabled || !Plugin.Instance.Config.ShowXP)
                 return;
 
-            if (XPEventCache.HasDone(player.UserId, reason))
+            // XP събития, които може да се повтарят
+            string[] repeatableEvents = { "kill", "death", "door", "spawn", "generator", "upgrade", "throw", "ressurect", "resurrect" };
+
+            if (!repeatableEvents.Contains(reason.ToLower()) && XPEventCache.HasDone(player.UserId, reason))
                 return; // Играчът вече е получил XP за това събитие този рунд
 
             var rewards = Plugin.Instance.Config.XPRewards;

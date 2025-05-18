@@ -75,7 +75,7 @@ namespace ParlamataUI.XPSystem
 
         private static void OnDoor(InteractingDoorEventArgs ev)
         {
-            if (ev.IsAllowed && ev.Door.IsOpen)
+            if (ev.IsAllowed && !ev.Door.IsOpen) // Ако вратата е била затворена и ще се отвори
                 XPManager.Reward(ev.Player, "door");
         }
 
