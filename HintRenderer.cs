@@ -148,7 +148,13 @@ namespace ParlamataUI
                 {
                     int remaining = Mathf.CeilToInt(effect.TimeLeft);
                     string effectName = effect.GetType().Name;
-                    effectsList.AppendLine($"<color=#ff6a00>{effectName}</color> <size=20>[{remaining}s]</size>");
+                    int intensity = effect.Intensity; // <-- тук вече имаме това директно
+
+                    string line = intensity > 0
+                        ? $"<color=#ff6a00>{effectName}</color> <size=20>[{remaining}s, Lvl {intensity}]</size>"
+                        : $"<color=#ff6a00>{effectName}</color> <size=20>[{remaining}s]</size>";
+
+                    effectsList.AppendLine(line);
                 }
             }
 
